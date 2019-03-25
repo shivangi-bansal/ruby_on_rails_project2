@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Assessment2</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+     <style>
+     body{
+      background-image: url("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=abstract-background-blur-255379.jpg&fm=jpg");
+      background-size: cover;
+    }
+      </style>
+    </head>
+
+  <body>
+  <% flash.each do |key, value| %>
+    <div class="<%= key %>">
+          <%= value %>
+    </div>
+<% end %>
+
+<nav class="navbar navbar-inverse">
+
+<div class="container-fluid">
+<div class="navbar-header">
+</div>
+<ul class="nav navbar-nav">
+<li> <%= link_to "Home", root_path %></li>
+  <li class="active"> <% if !logged_in? %> <%= link_to "Sign In", :controller => 'sessions', :action => 'new' %> <% end %></li>
+   <li><%= link_to "Sign Up", :controller => 'users', :action => 'new'%></li>
+  <li> <% if logged_in? %><%= link_to "Logout",logout_path,
+  method: :delete, :class => 'btn btn-warning' %></li>
+  <% if logged_in? &&  (current_user.usert == "admin")%>
+  <li><%= link_to "users", :controller => 'users', :action => 'index', :class => 'btn btn-danger' %></li>
+  <% end %> 
+  <% if logged_in? &&   (current_user.usert == "manager" || current_user.usert == "admin"  )%>
+  <li><%= link_to "articles", :controller => 'articles', :action => 'index', :class => 'btn btn-danger' %></li>
+ 
+  
+  <li><%= link_to "Category", :controller => 'categories', :action => 'index', :class => 'btn btn-danger' %></li>
+
+ <% end %>
+  <% end %> </ul>
+</div>
+</nav>
+
+
+
+    <%= yield %>
+  </body>
+</html>

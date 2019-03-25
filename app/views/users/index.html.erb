@@ -1,0 +1,52 @@
+<p id="notice"><%= notice %></p>
+<h1>WELCOME :   <%= session[:username] %> </h1>
+<h3> User Id : <%= session[:user_id] %> </h3>  <br>
+
+
+<h1>Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Usert</th>
+      <th>  Title</th>
+      <th>Description</th>
+      <th colspan="3">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+     
+      <tr>
+      <% if logged_in? && (session[:usert]=="admin" || session[:usert]=="manager") || user.id == session[:user_id]%>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+       
+        <td><%= user.usert %></td>
+        
+       <% user.articles.each do |art| %>
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><%= art.title %></td>
+        <td><%= art.description%>
+        <% end %>
+
+        <td><%= link_to 'Show', user %></td>
+        <% if(session[:usert]=="admin" || (user.usert=="customer" && session[:usert]=="manager")) %>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+      <%end%>
+      <%end%>
+      <%end%>
+  
+  </tbody>
+</table>
+<%= will_paginate  @users%>
+
+
